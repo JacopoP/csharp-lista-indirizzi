@@ -1,4 +1,6 @@
-﻿namespace csharp_lista_indirizzi
+﻿using System.Diagnostics;
+
+namespace csharp_lista_indirizzi
 {
     internal class Program
     {
@@ -32,7 +34,7 @@
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine($"A riga {counter} {ex.Message}");
+                    Debug.WriteLine($"A riga {counter} {ex.Message}");
                 }
             }
             sr.Close();
