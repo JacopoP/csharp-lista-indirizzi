@@ -14,5 +14,10 @@ namespace csharp_lista_indirizzi
         {
             Line = line;
         }
+
+        public void Print() 
+        {
+            Console.WriteLine($"A riga {Line} {Message}");
+        }
     }
 }
