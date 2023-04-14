@@ -7,40 +7,49 @@ namespace csharp_lista_indirizzi
         static void Main(string[] args)
         {
             List<Address> addressList = new List<Address>();
-            StreamReader sr = File.OpenText("addresses.csv");
-            sr.ReadLine();
+            List<Exception> exceptions = new List<Exception>();
             int counter = 0;
-            while (!sr.EndOfStream)
+            try
             {
-                string[] line = sr.ReadLine().Split(",");
-                counter++;
-                try
+                StreamReader sr = File.OpenText("addresses.csv");
+                sr.ReadLine();
+                while (!sr.EndOfStream)
                 {
-                    if (line.Length > 6)
+
+                    string[] line = sr.ReadLine().Split(",");
+                    counter++;
+                    try
                     {
-                        throw new Exception("sono stati inseriti troppi campi!");
+                        if (line.Length > 6)
+                        {
+                            throw new Exception("sono stati inseriti troppi campi!");
+                        }
+                        else if (line.Length < 6)
+                        {
+                            throw new Exception("sono stati inseriti troppi pochi campi!");
+                        }
+                        else
+                        {
+                            foreach (string s in line)
+                                if (s == String.Empty)
+                                    throw new Exception("ci sono dei campi vuoti!");
+                            addressList.Add(new Address(line[0], line[1], line[2], line[3], line[4], line[5]));
+                        }
                     }
-                    else if (line.Length < 6)
+                    catch (Exception ex)
                     {
-                        throw new Exception("sono stati inseriti troppi pochi campi!");
-                    }
-                    else
-                    {
-                        foreach (string s in line)
-                            if (s == String.Empty)
-                                throw new Exception("ci sono dei campi vuoti!");
-                        addressList.Add(new Address(line[0], line[1], line[2], line[3], line[4], line[5]));
+                        Debug.WriteLine($"A riga {counter} {ex.Message}");
                     }
                 }
-                catch (Exception ex)
+                sr.Close();
+                foreach (Address address in addressList)
                 {
-                    Debug.WriteLine($"A riga {counter} {ex.Message}");
+                    address.Print();
                 }
             }
-            sr.Close();
-            foreach (Address address in addressList)
+            catch
             {
-                address.Print();
+                Console.WriteLine("File non trovato!");
             }
         }
     }
